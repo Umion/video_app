@@ -1,0 +1,42 @@
+export const mockData = [
+  {
+    id: 0,
+    title: "First video title",
+    subtitle: "subtitle",
+    video_url: "https://youtu.be/v4qymvKaWaA",
+    video_time: 20,
+    description: "First  description",
+  },
+  {
+    id: 1,
+    title: "Second video title",
+    subtitle: "subtitle",
+    video_url: "https://youtu.be/FIjXrN8w6_k",
+    video_time: 30,
+    description: "Second  description",
+  },
+  {
+    id: 2,
+    title: "Third video title",
+    subtitle: "subtitle",
+    video_url: "https://youtu.be/kISLReswjco",
+    video_time: 10,
+    description: "Third  description",
+  },
+  {
+    id: 3,
+    title: "Fourth video title",
+    subtitle: "subtitle",
+    video_url: "https://youtu.be/Vrj5ZE5yiBo",
+    video_time: 15,
+    description: "Fourth  description",
+  },
+  {
+    id: 4,
+    title: "Fifth video title",
+    subtitle: "subtitle",
+    video_url: "https://youtu.be/FIjXrN8w6_k",
+    video_time: 40,
+    description: "Fifth  description",
+  },
+]

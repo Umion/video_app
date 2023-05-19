@@ -1,0 +1,7 @@
+@import './_variables.scss';
+@import './base.css';
+
+#app {
+  width: 1200px;
+  margin: 0 auto;
+}
