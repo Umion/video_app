@@ -38,7 +38,21 @@ export const appStore = defineStore({
         return idx !== -1 ? idx + 1 : null
       }
       return null
-    }
+    },
+    isUnlock() {
+      return (item: VideoModel) => {
+        const idx = this.getVideos.indexOf(item)
+        if (idx !== -1) {
+
+          let total = 0;
+
+          for (let i = 0; i < idx; i++) {
+            total += this.getVideos[i].video_time
+          }
+          return total
+        }
+      }
+    },
   },
   actions: {
     setVideo(data: VideoModel[]) {

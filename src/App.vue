@@ -42,20 +42,6 @@ const selectVideo = (video: VideoModel) => {
   }
 }
 
-const isUnlock = (item: VideoModel) => {
-  const idx = store.getVideos.indexOf(item)
-  if (idx !== -1) {
-
-    let total = 0;
-
-    for (let i = 0; i < idx; i++) {
-      total += store.getVideos[i].video_time
-    }
-    return total
-  }
-
-}
-
 onMounted(() => {
   store.init()
 })
@@ -110,7 +96,7 @@ onUnmounted(() => {
               :key="item.id"
               :item="item"
               :video-id="getIdFromUrl(item.video_url)"
-              :disabled="store.getTimer.total < isUnlock(item)"
+              :disabled="store.getTimer.total < store.isUnlock(item)"
               @submit="selectVideo(item)"
             ) 
 
@@ -132,7 +118,7 @@ onUnmounted(() => {
             div(
               v-for="item in store.getVideos"
               :key="item.id"
-            ) videoId: {{ item.id }} watched ({{ `${store.getTimer[item.id]} / ${item.video_time}` }}) || forUnlock: {{isUnlock(item)}}
+            ) videoId: {{ item.id }} watched ({{ `${store.getTimer[item.id]} / ${item.video_time}` }}) || forUnlock: {{store.isUnlock(item)}}
 </template>
 
 <style scoped lang="scss">
