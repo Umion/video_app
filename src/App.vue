@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import type { VideoModel } from '@/api/video/model'
+import type { OnChangeEventModel } from '@/types/app'
 import { appStore } from '@/stores/index'
 import { getIdFromUrl } from '@/utils/helpers'
 
@@ -25,7 +26,7 @@ function startTimer() {
   }
 }
 
-function onChange(e: Event): void {
+function onChange(e: OnChangeEventModel): void {
   if (e.data === 1) {
     interval.value = setInterval(startTimer, 1000);
   } else {
