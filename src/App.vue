@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, computed } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import type { VideoModel } from '@/api/video/model'
 import { appStore } from '@/stores/index'
 import { getIdFromUrl } from '@/utils/helpers'
@@ -9,6 +9,7 @@ import VideoItem from '@/components/VideoItem.vue'
 import LogoIcon from '@/components/icons/LogoIcon.vue'
 
 const youtube = ref("youtube")
+const showTimers = ref(false) // visual helper
 const interval = ref(null)
 const config = ref({
   autoplay: 1,
@@ -18,7 +19,7 @@ const config = ref({
 const store = appStore()
 
 function startTimer() {
-  if (store.getTimer[store.getActive.id] < store.getActive.video_time) {
+  if (store.getActive && store.getTimer[store.getActive.id] < store.getActive.video_time) {
     store.getTimer[store.getActive.id] += 1;
     store.getTimer.total += 1;
   }
@@ -100,7 +101,10 @@ onUnmounted(() => {
               @submit="selectVideo(item)"
             ) 
 
-      el-row(:gutter="20")
+      el-row(
+        :gutter="20"
+        class="footer"
+      )
         el-col(
           :span="15"
           style="border-right: 1px solid black"
@@ -113,16 +117,32 @@ onUnmounted(() => {
             class="footer__description"
           ) {{ store.getActive.description }}
         el-col(:span="9")
-          div(v-if="store.getVideos.length")
-            div total: {{ store.getTimer.total }}
-            div(
-              v-for="item in store.getVideos"
-              :key="item.id"
-            ) videoId: {{ item.id }} watched ({{ `${store.getTimer[item.id]} / ${item.video_time}` }}) || forUnlock: {{store.isUnlock(item)}}
+          el-switch(
+          v-model="showTimers"
+          class="mb-2"
+          active-text="Show timers (visual helper)"
+          )
+          div(v-if="showTimers")
+            div(v-if="store.getVideos.length")
+              el-text totalTime: {{ store.getTimer.total }}
+              el-row(
+                v-for="item in store.getVideos"
+                :key="item.id"
+                :gutter="20"
+              )
+                el-col(:span="3")
+                  el-text ID: {{ item.id }}
+                el-col(:span="8")
+                  el-text watched ({{ `${store.getTimer[item.id]} / ${item.video_time}` }})
+                el-col(:span="8")
+                  el-text forUnlock {{store.isUnlock(item)}}
+          div(v-else)
+            div lorem
 </template>
 
 <style scoped lang="scss">
 header {
+  border-bottom: 1px solid lightgray;
   text-align: center;
 
   svg {
@@ -143,6 +163,8 @@ header {
 }
 
 .footer {
+  margin-top: 50px;
+
   &__title {
     margin: 0 0 20px;
   }
@@ -151,9 +173,5 @@ header {
 
 .decor {
   color: $primary
-}
-
-.el-row {
-  margin-bottom: 20px;
 }
 </style>

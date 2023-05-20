@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { apiGetVideo } from '@/api/video/index'
-import { VideoModel } from '@/api/video/model'
+import type { VideoModel } from '@/api/video/model'
 
 interface TimerModel {
   total: number

@@ -17,7 +17,7 @@ export const mockData = [
   },
   {
     id: 2,
-    title: "Third video title",
+    title: "Third video title super long-long title",
     subtitle: "subtitle",
     video_url: "https://youtu.be/kISLReswjco",
     video_time: 10,

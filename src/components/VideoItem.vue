@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineProps } from 'vue'
 import type { VideoModel } from '@/api/video/model'
 import PlayIcon from '@/components/icons/PlayIcon.vue'
 import BlockIcon from '@/components/icons/BlockIcon.vue'
@@ -33,7 +32,8 @@ const submit = () => {
     )
     BlockIcon(v-if="props.disabled")
     PlayIcon(v-else)
-  .item__content {{ props.item.title }}
+  .item__content 
+    p {{ props.item.title }}
 </template>
 
 <style scoped lang="scss">
@@ -44,6 +44,7 @@ const submit = () => {
   background: $primary;
   cursor: pointer;
   height: 70px;
+  overflow: hidden;
 
   &.disabled {
     background: $grey;
@@ -72,8 +73,16 @@ const submit = () => {
     flex-grow: 1;
     display: flex;
     align-items: center;
-    color: $white;
-    padding: 15px
+    padding: 15px;
+    overflow: hidden;
+
+    p {
+      color: $white;
+      font-size: 18px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 }
 </style>
