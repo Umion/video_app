@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from 'vue'
 import type { VideoModel } from '@/api/video/model'
-import type { OnChangeEventModel } from '@/types/app'
+import type { OnChangeEventModel, ConfigModel } from '@/types/app'
 import { appStore } from '@/stores/index'
 import { getIdFromUrl } from '@/utils/helpers'
 
@@ -9,17 +9,17 @@ import YouTube from 'vue3-youtube'
 import VideoItem from '@/components/VideoItem.vue'
 import LogoIcon from '@/components/icons/LogoIcon.vue'
 
-const youtube = ref("youtube")
-const showTimers = ref(false) // visual helper
-const interval = ref(null)
-const config = ref({
+const youtube = ref<string>("youtube")
+const showTimers = ref<boolean>(false) // visual helper
+const interval = ref<number | null>(null)
+const config = ref<ConfigModel>({
   autoplay: 1,
   rel: 0
 })
 
 const store = appStore()
 
-function startTimer() {
+function startTimer(): void {
   if (store.getActive && store.getTimer[store.getActive.id] < store.getActive.video_time) {
     store.getTimer[store.getActive.id] += 1;
     store.getTimer.total += 1;
@@ -34,7 +34,7 @@ function onChange(e: OnChangeEventModel): void {
   }
 }
 
-const selectVideo = (video: VideoModel) => {
+const selectVideo = (video: VideoModel): void => {
   const link = getIdFromUrl(video.video_url)
   if (link) {
     store.setActive(video)
