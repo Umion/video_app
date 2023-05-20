@@ -39,9 +39,19 @@ export const appStore = defineStore({
       }
       return null
     },
-    isUnlock() {
+    getItemByIndex(): (idx: number) => VideoModel {
+      return (idx: number) => {
+        return this.getVideos[idx]
+      }
+    },
+    getItemIndex(): (item: VideoModel | null) => number {
+      return (item: VideoModel | null) => {
+        return item ? this.getVideos.indexOf(item) : -1
+      }
+    },
+    isUnlock(): (item: VideoModel) => number | null {
       return (item: VideoModel) => {
-        const idx = this.getVideos.indexOf(item)
+        const idx = this.getItemIndex(item)
         if (idx !== -1) {
 
           let total = 0;
@@ -50,6 +60,8 @@ export const appStore = defineStore({
             total += this.getVideos[i].video_time
           }
           return total
+        } else {
+          return null
         }
       }
     },

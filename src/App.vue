@@ -4,6 +4,7 @@ import type { VideoModel } from '@/api/video/model'
 import type { OnChangeEventModel, ConfigModel } from '@/types/app'
 import { appStore } from '@/stores/index'
 import { getIdFromUrl } from '@/utils/helpers'
+import { ElNotification } from 'element-plus'
 
 import YouTube from 'vue3-youtube'
 import VideoItem from '@/components/VideoItem.vue'
@@ -19,14 +20,14 @@ const config = ref<ConfigModel>({
 
 const store = appStore()
 
-function startTimer(): void {
+const startTimer = (): void => {
   if (store.getActive && store.getTimer[store.getActive.id] < store.getActive.video_time) {
     store.getTimer[store.getActive.id] += 1;
     store.getTimer.total += 1;
   }
 }
 
-function onChange(e: OnChangeEventModel): void {
+const onChange = (e: OnChangeEventModel): void => {
   if (e.data === 1) {
     interval.value = setInterval(startTimer, 1000);
   } else {
@@ -42,6 +43,36 @@ const selectVideo = (video: VideoModel): void => {
   } else {
     console.log('invalid link');
   }
+}
+
+const goToNextEpiside = (): void => {
+  const idx = store.getItemIndex(store.getActive)
+  if (idx !== -1) {
+    const nextEpisode = store.getItemByIndex(idx + 1)
+    if (nextEpisode) {
+      const unlockTime = store.isUnlock(nextEpisode)
+      if (unlockTime) {
+        const isUnlocked = store.getTimer.total < unlockTime
+        if (isUnlocked) {
+          ElNotification({
+            title: 'Warning',
+            message: `Episode "${nextEpisode.title}" is not available. Watch video for unlock next episode.`,
+            type: 'warning',
+          })
+        } else {
+          selectVideo(nextEpisode)
+        }
+      }
+    } else {
+      ElNotification({
+        title: 'Warning',
+        message: 'This is the last episode on the list',
+        type: 'warning',
+      })
+    }
+
+  }
+
 }
 
 onMounted(() => {
@@ -139,7 +170,9 @@ onUnmounted(() => {
                   el-text forUnlock {{store.isUnlock(item)}}
           div(v-else)
             div
-              el-text Already watched? get access to the next episode
+              .footer__side-title
+                el-text Already watched? get access to the next episode
+              button.footer__side-button(@click="goToNextEpiside") Next Episode
 </template>
 
 <style scoped lang="scss">
@@ -171,6 +204,31 @@ header {
     margin: 0 0 20px;
   }
 
+  &__side {
+    &-title {
+      text-align: center;
+      margin: 20px 0;
+
+      & * {
+        font-size: 16px;
+        font-weight: 600;
+        color: $black;
+      }
+    }
+
+    &-button {
+      cursor: pointer;
+      display: block;
+      text-align: center;
+      background: $primary;
+      border: 0;
+      padding: 20px 100px;
+      color: $white;
+      margin: auto;
+      font-size: 16px;
+      font-weight: 600;
+    }
+  }
 }
 
 .decor {
