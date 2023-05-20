@@ -9,9 +9,9 @@ import YouTube from 'vue3-youtube'
 import VideoItem from '@/components/VideoItem.vue'
 import LogoIcon from '@/components/icons/LogoIcon.vue'
 
-const youtube = ref<string>("youtube")
+const youtube = ref<any>("youtube")
 const showTimers = ref<boolean>(false) // visual helper
-const interval = ref<any>(null)
+const interval = ref<number | undefined>(undefined)
 const config = ref<ConfigModel>({
   autoplay: 1,
   rel: 0
@@ -138,7 +138,8 @@ onUnmounted(() => {
                 el-col(:span="8")
                   el-text forUnlock {{store.isUnlock(item)}}
           div(v-else)
-            div lorem
+            div
+              el-text Already watched? get access to the next episode
 </template>
 
 <style scoped lang="scss">
