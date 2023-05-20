@@ -11,7 +11,7 @@ import LogoIcon from '@/components/icons/LogoIcon.vue'
 
 const youtube = ref<string>("youtube")
 const showTimers = ref<boolean>(false) // visual helper
-const interval = ref<number | null>(null)
+const interval = ref<any>(null)
 const config = ref<ConfigModel>({
   autoplay: 1,
   rel: 0
@@ -48,7 +48,7 @@ onMounted(() => {
   store.init()
 })
 onUnmounted(() => {
-  clearInterval(timer.value);
+  clearInterval(interval.value);
 })
 </script>
 
