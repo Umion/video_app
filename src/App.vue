@@ -14,7 +14,7 @@ const youtube = ref<any>("youtube")
 const showTimers = ref<boolean>(false) // visual helper
 const interval = ref<number | undefined>(undefined)
 const config = ref<ConfigModel>({
-  autoplay: 1,
+  autoplay: 0,
   rel: 0
 })
 

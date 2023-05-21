@@ -81,10 +81,12 @@ export const appStore = defineStore({
       apiGetVideo().then(data => {
         if (data.length) {
           this.setVideo(data)
-          const timer = {
+          const timer: TimerModel = {
             total: this.timers.total,
-            ...data.map(t => 0) // eslint-disable-line
           }
+          data.forEach(t => {
+            timer[t.id] = 0
+          })
           this.setTimer(timer)
           this.setActive(data[0])
         }
